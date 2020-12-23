@@ -105,6 +105,8 @@ console.log(`value: ${text}, type: ${typeof text}`);
 
 // 6. Object 간략히~
 // mandu Object가 다른 Object가 될 수는 없지만 값 변경은 가능.
+// 그 이유는 Object를 선언했을 때, 레퍼런스가 메모리에 저장되고 실질적인 값은 다른 공간에 저장되기 때문이다.
+// Immutable Object를 생성하고 싶다면 frozen object로 선언한다.(i.e. Object.freeze(obj))
 const mandu = {
     name: 'dimsum?',
     age: 9876

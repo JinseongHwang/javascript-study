@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7310c620-bcbe-4eff-bc05-73d17fc89c44" name="Default Changelist" comment="" />
+    <list default="true" id="7310c620-bcbe-4eff-bc05-73d17fc89c44" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../basic-node-study/event.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../basic-node-study/readFileStream.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../basic-node-study/testStream.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../basic-node-study/threadpool.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -62,8 +68,100 @@
       <option name="presentableId" value="Default" />
       <updated>1609584450035</updated>
       <workItem from="1609584451651" duration="2425000" />
-      <workItem from="1609592344868" duration="16335000" />
+      <workItem from="1609592344868" duration="23074000" />
     </task>
+    <task id="LOCAL-00001" summary="feat: initial commit">
+      <created>1609651782399</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1609651782399</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat: console APIs">
+      <created>1609651827402</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1609651827402</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: file system APIs">
+      <created>1609651857789</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1609651857789</updated>
+    </task>
+    <task id="LOCAL-00004" summary="test: variable">
+      <created>1609651879614</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1609651879614</updated>
+    </task>
+    <task id="LOCAL-00005" summary="test: function">
+      <created>1609651925696</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1609651925696</updated>
+    </task>
+    <task id="LOCAL-00006" summary="test: main">
+      <created>1609651941598</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1609651941598</updated>
+    </task>
+    <task id="LOCAL-00007" summary="feat: async - process.nextTick">
+      <created>1609651964865</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1609651964865</updated>
+    </task>
+    <task id="LOCAL-00008" summary="feat: OS APIs">
+      <created>1609651984898</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1609651984898</updated>
+    </task>
+    <task id="LOCAL-00009" summary="feat: path APIs">
+      <created>1609651995059</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1609651995059</updated>
+    </task>
+    <task id="LOCAL-00010" summary="feat: process APIs">
+      <created>1609652003720</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1609652003720</updated>
+    </task>
+    <task id="LOCAL-00011" summary="feat: spawn in child_process">
+      <created>1609652029699</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1609652029699</updated>
+    </task>
+    <task id="LOCAL-00012" summary="feat: exports, this and global this">
+      <created>1609652076524</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1609652076524</updated>
+    </task>
+    <task id="LOCAL-00013" summary="feat: timer APIs">
+      <created>1609652087077</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1609652087077</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -79,5 +177,21 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: initial commit" />
+    <MESSAGE value="feat: console APIs" />
+    <MESSAGE value="feat: file system APIs" />
+    <MESSAGE value="test: variable" />
+    <MESSAGE value="test: function" />
+    <MESSAGE value="test: main" />
+    <MESSAGE value="feat: async - process.nextTick" />
+    <MESSAGE value="feat: OS APIs" />
+    <MESSAGE value="feat: path APIs" />
+    <MESSAGE value="feat: process APIs" />
+    <MESSAGE value="feat: spawn in child_process" />
+    <MESSAGE value="feat: exports, this and global this" />
+    <MESSAGE value="feat: timer APIs" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: timer APIs" />
   </component>
 </project>

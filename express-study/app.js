@@ -1,21 +1,53 @@
 const express = require('express');
 const path = require('path');
+const dotenv = require('dotenv');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const multer = require('multer');
 
 // 1. App 생성
 const app = express();
 
 // 2. App 설정
+// dotenv의 옵션을 가져온다.
+dotenv.config();
 // 포트를 app에 직접 설정 가능하다. 전역 변수 느낌으로
+// 환경변수(process.env)에 PORT 값이 있으면 가져오고, 없으면 3000을 사용하겠다는 의미이다.
 app.set('port', process.env.PORT || 3000);
 
 // 3. 공통 Middleware
+// morgan은 request와 response에 대한 정보를 알려준다.
+// (대체로)'dev' 옵션은 개발 시에 사용하고, 'combined' 옵션 조금 더 자세하게 보여주기 때문에 배포 시에 사용한다.
+app.use(morgan('dev'));
+
+// 예를 들어, localhost:3000/foo.html 을 클라이언트가 요청했을 때 실제로는 currentDir/public/foo.html 에서 가져가도록 한다.
+// 클라이언트가 서버 구조를 쉽게 알 수 없게 해서 보안 취약점을 보완한다.
+// 파일 찾기 성공: 아래의 라우터로 이동하지 않는다. next()가 내부적으로 없다.
+// 파일 찾기 실패: 만약 localhosr:3000/about이라면, 내부적으로 next()실행. 다음 라우터로 이동 -> 따라서 위치도 중요하다.
+// 만약 로그인 한 사람에게만 파일에 접근 권한을 주려면 cookirParser와 session을 위로 올려도 상관없다.
+// format: app.use('요청 경로', express.static(실제 경로));
+/*
+    app.use('/', express.static(__dirname, 'public'));
+    -> 현재는 학습용이므로 public이 없다.
+ */
+
+// cookie-parser은 쿠키 데이터를 다루기 쉽게 만들어준다.
+app.use(cookieParser());
+
+// 과거의 body-parser가 express안에 다음과 같이 포함되어졌다.
+app.use(express.json()); // 클라이언트에서 json을 보내주면 req.body 안에서 접근 가능하게 만들어준다.
+app.use(express.urlencoded({ extended: true })) // 클라이언트에서 form-submit한 내용을 파싱한다.
+// extended true: qs, false: querystring -> qs를 사용할 수 있도록 true 값을 주는 것을 권장함.
+// 하지만 form에서 이미지나 파일을 전송할 경우 urlencoded가 처리할 수 없기 때문에 multer를 사용한다.
+
 // app.use 역시 첫 번째 매개변수에 경로를 적어주면 그 경로에서만 실행된다.
 app.use((req, res, next) => {
     console.log('미들웨어가 실행되었습니다.');
     next();
 }, ((req, res, next) => {
     try {
-        console.log('다음 미들웨어입니다.');
+        // console.log('다음 미들웨어입니다.');
         next();
     } catch (error) {
         console.log('[ERROR] 에러 발생!');
@@ -79,7 +111,7 @@ app.use((err, req, res, next) => {
 
 // 6. listen
 app.listen(app.get('port'), () => {
-    console.log('Run express server on PORT:3000');
+    console.log(`Run express server on PORT:${app.get('port')}`);
 });
 
 /*##################################################

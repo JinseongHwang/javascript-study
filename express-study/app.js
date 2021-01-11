@@ -19,7 +19,15 @@ app.set('port', process.env.PORT || 3000);
 // 3. 공통 Middleware
 // morgan은 request와 response에 대한 정보를 알려준다.
 // (대체로)'dev' 옵션은 개발 시에 사용하고, 'combined' 옵션 조금 더 자세하게 보여주기 때문에 배포 시에 사용한다.
-app.use(morgan('dev'));
+// 보통 이렇게 사용한다 -> app.use(morgan('dev'));
+// + 조건에 따라 다른 미들웨어를 사용하고 싶을 때 아래와 같이 작성한다. (매개변수 동일하게 붙여서 작성)
+app.use((req, res, next) => {
+    if (process.env.NODE_ENV === 'production') {
+        morgan('combined')(req, res, next);
+    } else {
+        morgan('dev')(req, res, next);
+    }
+});
 
 // 예를 들어, localhost:3000/foo.html 을 클라이언트가 요청했을 때 실제로는 currentDir/public/foo.html 에서 가져가도록 한다.
 // 클라이언트가 서버 구조를 쉽게 알 수 없게 해서 보안 취약점을 보완한다.

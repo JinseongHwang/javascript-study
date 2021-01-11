@@ -33,13 +33,30 @@ app.use(morgan('dev'));
  */
 
 // cookie-parser은 쿠키 데이터를 다루기 쉽게 만들어준다.
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // 과거의 body-parser가 express안에 다음과 같이 포함되어졌다.
 app.use(express.json()); // 클라이언트에서 json을 보내주면 req.body 안에서 접근 가능하게 만들어준다.
 app.use(express.urlencoded({ extended: true })) // 클라이언트에서 form-submit한 내용을 파싱한다.
 // extended true: qs, false: querystring -> qs를 사용할 수 있도록 true 값을 주는 것을 권장함.
 // 하지만 form에서 이미지나 파일을 전송할 경우 urlencoded가 처리할 수 없기 때문에 multer를 사용한다.
+
+// session 관리용 미들웨어
+// req.session.* 으로 접근 가능하며, request를 보낸 각각의 클라이언트에게 고유한 session이 부여된다.
+// 참고: https://dev-dain.tistory.com/68
+app.use(session({
+    resave: false, // request가 들어오면 수정사항이 없더라도 다시 저장 -> false
+    saveUninitialized: true, // 세션에 저장 내역이 없더라도 처음부터 세션을 생성 -> true
+    secret: process.env.COOKIE_SECRET, // 암호화에 사용되는 key (cookie-parser의 매개변수와 동일)
+    cookie: { // 쿠키 설정
+        httpOnly: true, // 쿠키가 웹브라우저와 통신할 때만 쿠키를 발행한다. 즉, js로 데이터 탈취가 불가능해진다.
+        secure: false, // https로 통신할 때만 쿠키를 전송한다. 지금은 개발 단계이므로 false이고, 배포 시에는 true로 변경한다.
+    },
+    name: 'connect.sid', // Default: 세션의 Name
+}));
+
+app.use(multer().array());
+
 
 // app.use 역시 첫 번째 매개변수에 경로를 적어주면 그 경로에서만 실행된다.
 app.use((req, res, next) => {
@@ -60,6 +77,7 @@ app.use((req, res, next) => {
 // app.METHOD(PATH)
 // GET
 app.get('/', (req, res, next) => {
+    req.session.myName = 'jinseong'; // 세션 값 설정
     res.sendFile(path.join(__dirname, 'index.html'));
     // next('route')를 만나면 다음 미들웨어가 아닌
     // 다음 라우터부터 다시 살펴보며 만족하는 경로가 있는지 확인해서 들어간다.
@@ -71,6 +89,22 @@ app.get('/', (req, res, next) => {
 app.get('/', ((req, res) => {
     console.log('같은 경로 다른 라우터');
 }));
+
+app.get('/session/view', (req, res) => {
+    if (req.session.myName) { // 세션 값 유무 확인
+        // 세션 값 조회
+        // 단, 실제로 쿠키에 값이 저장될 때는 secret값에 따라 암호화 되어서 저장됩니다.
+        // 따라서 값이 's:'로 시작되지만, encodeURIComponent 함수가 실행되어 's%3A'로 시작합니다.
+        res.send(`현재 세션에 저장된 myName 값은 "${req.session.myName}" 입니다.`);
+    } else {
+        res.send('현재 세션에 myName 값이 저장되어 있지 않습니다.');
+    }
+});
+
+app.get('/session/clear', (req, res) => {
+    req.session.destroy();
+    res.send('세션을 비웠습니다.');
+});
 
 // POST
 app.post('/', (req, res) => {

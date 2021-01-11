@@ -159,7 +159,7 @@ const upload = multer({
 app.get('/upload', (req, res) => {
     res.sendFile(path.join(__dirname, 'multipart.html'));
 });
-// upload.single: 하나의 파일만 upload 가능,
+// upload.single: 하나의 파일만 upload 가능, 여러개의 파일을 업로드 하고 싶다면 책 247page 참고
 app.post('/upload', upload.single('image'), (req, res) => {
     console.log(req.file);
     res.send('ok');

@@ -111,6 +111,16 @@ app.post('/', (req, res) => {
     res.send('hello express. this is POST');
 });
 
+app.use((req, res, next) => {
+    // 새로운 request가 들어오면 이 값은 초기화됩니다.
+    req.tempData = '저는 세션에 추가하기 애매할 만큼 잠깐 존재할 데이터입니다.';
+    next();
+});
+
+app.get('/data', (req, res, next) => {
+   res.send(`전달받은 메시지: ${req.tempData}`);
+});
+
 // another Path
 app.get('/about', (req, res) => {
     res.send('hello express. this is about.');

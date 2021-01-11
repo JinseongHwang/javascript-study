@@ -1,17 +1,18 @@
+const dotenv = require('dotenv');
+dotenv.config(); // dotenv의 옵션을 가져온다. 최대한 위에 위치시킨다.
+
 const express = require('express');
 const path = require('path');
-const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const multer = require('multer');
+const fs = require('fs');
 
 // 1. App 생성
 const app = express();
 
 // 2. App 설정
-// dotenv의 옵션을 가져온다.
-dotenv.config();
 // 포트를 app에 직접 설정 가능하다. 전역 변수 느낌으로
 // 환경변수(process.env)에 PORT 값이 있으면 가져오고, 없으면 3000을 사용하겠다는 의미이다.
 app.set('port', process.env.PORT || 3000);
@@ -63,9 +64,6 @@ app.use(session({
     name: 'connect.sid', // Default: 세션의 Name
 }));
 
-app.use(multer().array());
-
-
 // app.use 역시 첫 번째 매개변수에 경로를 적어주면 그 경로에서만 실행된다.
 app.use((req, res, next) => {
     console.log('미들웨어가 실행되었습니다.');
@@ -98,6 +96,16 @@ app.get('/', ((req, res) => {
     console.log('같은 경로 다른 라우터');
 }));
 
+// POST
+app.post('/', (req, res) => {
+    res.send('hello express. this is POST');
+});
+
+// another Path
+app.get('/about', (req, res) => {
+    res.send('hello express. this is about.');
+});
+
 app.get('/session/view', (req, res) => {
     if (req.session.myName) { // 세션 값 유무 확인
         // 세션 값 조회
@@ -114,11 +122,6 @@ app.get('/session/clear', (req, res) => {
     res.send('세션을 비웠습니다.');
 });
 
-// POST
-app.post('/', (req, res) => {
-    res.send('hello express. this is POST');
-});
-
 app.use((req, res, next) => {
     // 새로운 request가 들어오면 이 값은 초기화됩니다.
     req.tempData = '저는 세션에 추가하기 애매할 만큼 잠깐 존재할 데이터입니다.';
@@ -126,12 +129,40 @@ app.use((req, res, next) => {
 });
 
 app.get('/data', (req, res, next) => {
-   res.send(`전달받은 메시지: ${req.tempData}`);
+    res.send(`전달받은 메시지: ${req.tempData}`);
 });
 
-// another Path
-app.get('/about', (req, res) => {
-    res.send('hello express. this is about.');
+// multer 실습
+try {
+    fs.readdirSync('uploads');
+} catch (error) {
+    console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.');
+    fs.mkdirSync('uploads');
+}
+
+const upload = multer({
+    // storage: upload한 파일을 어디에 저장할건지
+    storage: multer.diskStorage({ // dist(HDD, SSD..)에 저장한다.
+        destination(req, file, done) { // 저장 경로
+            // done의 첫 매개변수는 에러처리 미들웨어이다. 두 번째에 성공했을 경우의 경로를 넣으면 된다.
+            done(null, 'uploads/');
+        },
+        filename(req, file, done) { // 저장될 파일의 이름
+            const ext = path.extname(file.originalname); // 확장자 추출
+            done(null, path.basename(file.originalname, ext) + Date.now() + ext); // 중복 이름 없게 시간을 이름에 추가한다.
+        },
+    }),
+    // upload하는 파일의 크기를 제한 (Byte단위)
+    limits: { fileSize: 5 * 1024 * 1024 }, // 최대 5MB까지 허용
+});
+// upload 객체 생성 완료
+app.get('/upload', (req, res) => {
+    res.sendFile(path.join(__dirname, 'multipart.html'));
+});
+// upload.single: 하나의 파일만 upload 가능,
+app.post('/upload', upload.single('image'), (req, res) => {
+    console.log(req.file);
+    res.send('ok');
 });
 
 // Route parameter
